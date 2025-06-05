@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Viewer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #fff0f3;
+      margin: 0;
+    }
+
+    .image-container {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    .image-container img {
+      max-width: 100%;
+      max-height: 90vh;
+      border: 5px solid #590d22;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background-color: #ff4d6d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    .back-btn:hover {
+      background-color: #d6336c;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="image-container">
+    <button class="back-btn" onclick="goBack()">Back</button>
+    <img id="displayedImage" src="" alt="Displayed Image">
+  </div>
+
+  <script>
+    // Function to get the image source from the URL and display it
+    function displayImage() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const imgSrc = urlParams.get('img');
+      const imgElement = document.getElementById('displayedImage');
+      imgElement.src = imgSrc;
+    }
+
+    // Function to go back to the previous page
+    function goBack() {
+      window.history.back();
+    }
+
+    // Call the displayImage function on page load
+    window.onload = displayImage;
+  </script>
+</body>
+
+</html>

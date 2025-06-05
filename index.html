@@ -255,6 +255,7 @@
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
       transition: all 0.4s ease;
       aspect-ratio: 1/1;
+      cursor: pointer;
     }
 
     .gallery-item img {
@@ -511,8 +512,8 @@
       }
     }
 
-    /* Lightbox */
-    .lightbox {
+    /* Image Modal */
+    .image-modal {
       display: none;
       position: fixed;
       top: 0;
@@ -523,27 +524,37 @@
       z-index: 2000;
       justify-content: center;
       align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
-    .lightbox.active {
+    .image-modal.active {
       display: flex;
+      opacity: 1;
     }
 
-    .lightbox-content {
+    .modal-content {
       position: relative;
       max-width: 90%;
       max-height: 90%;
+      text-align: center;
     }
 
-    .lightbox-img {
+    .modal-image {
       max-width: 100%;
-      max-height: 90vh;
+      max-height: 80vh;
       border: 5px solid white;
       border-radius: 10px;
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
     }
 
-    .close-btn {
+    .modal-caption {
+      color: white;
+      margin-top: 15px;
+      font-size: 1.2rem;
+    }
+
+    .modal-close {
       position: absolute;
       top: -40px;
       right: -40px;
@@ -560,9 +571,40 @@
       transition: all 0.3s ease;
     }
 
-    .close-btn:hover {
+    .modal-close:hover {
       transform: rotate(90deg);
       background: var(--secondary);
+    }
+
+    /* Navigation arrows */
+    .modal-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 50px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.2);
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .modal-nav:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .modal-prev {
+      left: 20px;
+    }
+
+    .modal-next {
+      right: 20px;
     }
 
     /* Responsive Design */
@@ -600,9 +642,15 @@
         font-size: 1.2rem;
       }
 
-      .close-btn {
+      .modal-close {
         top: -30px;
         right: -30px;
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+      }
+
+      .modal-nav {
         width: 50px;
         height: 50px;
         font-size: 30px;
@@ -629,6 +677,12 @@
       .birthday-wish h2 {
         font-size: 2rem;
       }
+
+      .modal-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
     }
   </style>
 </head>
@@ -636,10 +690,15 @@
 <body>
   <div class="confetti" id="confetti"></div>
   
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
-    <span class="close-btn" id="closeBtn">&times;</span>
-    <img id="lightboxImg" src="" alt="Enlarged view">
+  <!-- Image Modal -->
+  <div class="image-modal" id="imageModal">
+    <div class="modal-nav modal-prev" id="modalPrev">❮</div>
+    <div class="modal-content">
+      <span class="modal-close" id="modalClose">&times;</span>
+      <img class="modal-image" id="modalImage" src="" alt="">
+      <div class="modal-caption" id="modalCaption"></div>
+    </div>
+    <div class="modal-nav modal-next" id="modalNext">❯</div>
   </div>
   
   <header>
@@ -676,83 +735,123 @@
   <!-- Gallery Section -->
   <section class="gallery-section">
     <h2 class="section-title animate__animated animate__fadeIn">Family Beautiful Memories</h2>
-    
+
     <div class="frame-gallery">
-      <div class="gallery-item">
-        <img src="tinku_img/493672089_2733383017005525_5211302066273336540_n.jpg" alt="Beautiful Tinku">
-      </div>
-      <div class="gallery-item">
-        <img src="tinku_img/485366686_2693534557657038_6969349954910133655_n.jpg" alt="Tinku with family">
-      </div>
-      <div class="gallery-item">
-        <img src="tinku_img/Unknown-2.jpg" alt="Tinku smiling">
-      </div>
-      <div class="gallery-item">
-        <img src="tinku_img/Unknown4.jpg" alt="Tinku smiling">
-      </div>
-      <div class="gallery-item">
-        <img src="tinku_img/Unknown.jpg" alt="Tinku portrait">
-      </div>
-      <div class="gallery-item">
-        <img src="tinku_img/481669174_2103966330119500_5738951325162042364_n.jpg" alt="Tinku looking beautiful">
-      </div>
-      <div class="gallery-item">
-        <img src="tinku_img/480710966_2792138434290284_1122448835459877888_n.jpg" alt="Tinku special moment">
-      </div>
-      <div class="gallery-item">
-        <img src="tinku_img/476026661_18259324651286759_2408930245531997984_n.jpg" alt="Us together 1">
-      </div>
-      <div class="gallery-item">
-        <img src="tinku_img/50868934_985610688449442_856553471099273216_n.jpg" alt="Us together 2">
-      </div>
-      <div class="gallery-item">
-        <img src="tinku_img/51771380_993510670992777_5673789786725285888_n.jpg" alt="Us together 2">
-      </div>
-      <div class="gallery-item">
-        <img src="tinku_img/82628115_1302864260057415_8305499880311226368_n.jpg" alt="Us together 2">
-      </div>
-      <div class="gallery-item">
-      <img src="tinku_img/469908261_18252686245286759_7194161102621990552_n.jpg" alt="Us together 2">
-      </div>
-      <div class="gallery-item">
-        <img src="tinku_img/473399347_1749930385858245_7135066282047341134_n.jpg">
-      </div>
+  <a href="image_view.html?img=tinku_img/493672089_2733383017005525_5211302066273336540_n.jpg">
+    <div class="gallery-item">
+      <img src="tinku_img/493672089_2733383017005525_5211302066273336540_n.jpg" alt="Beautiful Tinku"> 
     </div>
+  </a>
+  <a href="image_view.html?img=tinku_img/485366686_2693534557657038_6969349954910133655_n.jpg">
+    <div class="gallery-item">
+      <img src="tinku_img/485366686_2693534557657038_6969349954910133655_n.jpg" alt="Tinku with family">
+    </div>
+  </a>
+  <a href="image_view.html?img=tinku_img/Unknown-2.jpg">
+    <div class="gallery-item">
+      <img src="tinku_img/Unknown-2.jpg" alt="Tinku smiling">
+    </div>
+  </a>
+  <a href="image_view.html?img=tinku_img/Unknown4.jpg">
+    <div class="gallery-item">
+      <img src="tinku_img/Unknown4.jpg" alt="Tinku smiling">
+    </div>
+  </a>
+  <a href="image_view.html?img=tinku_img/Unknown.jpg">
+    <div class="gallery-item">
+      <img src="tinku_img/Unknown.jpg" alt="Tinku portrait">
+    </div>
+  </a>
+  <a href="image_view.html?img=tinku_img/481669174_2103966330119500_5738951325162042364_n.jpg">
+    <div class="gallery-item">
+      <img src="tinku_img/481669174_2103966330119500_5738951325162042364_n.jpg" alt="Tinku looking beautiful">
+    </div>
+  </a>
+  <a href="image_view.html?img=tinku_img/480710966_2792138434290284_1122448835459877888_n.jpg">
+    <div class="gallery-item">
+      <img src="tinku_img/480710966_2792138434290284_1122448835459877888_n.jpg" alt="Tinku special moment">
+    </div>
+  </a>
+  <a href="image_view.html?img=tinku_img/476026661_18259324651286759_2408930245531997984_n.jpg">
+    <div class="gallery-item">
+      <img src="tinku_img/476026661_18259324651286759_2408930245531997984_n.jpg" alt="Us together 1">
+    </div>
+  </a>
+  <a href="image_view.html?img=tinku_img/50868934_985610688449442_856553471099273216_n.jpg">
+    <div class="gallery-item">
+      <img src="tinku_img/50868934_985610688449442_856553471099273216_n.jpg" alt="Us together 2">
+    </div>
+  </a>
+  <a href="image_view.html?img=tinku_img/51771380_993510670992777_5673789786725285888_n.jpg">
+    <div class="gallery-item">
+      <img src="tinku_img/51771380_993510670992777_5673789786725285888_n.jpg" alt="Us together 2">
+    </div>
+  </a>
+  <a href="image_view.html?img=tinku_img/82628115_1302864260057415_8305499880311226368_n.jpg">
+    <div class="gallery-item">
+      <img src="tinku_img/82628115_1302864260057415_8305499880311226368_n.jpg" alt="Us together 2">
+    </div>
+  </a>
+  <a href="image_view.html?img=tinku_img/469908261_18252686245286759_7194161102621990552_n.jpg">
+    <div class="gallery-item">
+      <img src="tinku_img/469908261_18252686245286759_7194161102621990552_n.jpg" alt="Us together 2">
+    </div>
+  </a>
+  <a href="image_view.html?img=tinku_img/473399347_1749930385858245_7135066282047341134_n.jpg">
+    <div class="gallery-item">
+      <img src="tinku_img/473399347_1749930385858245_7135066282047341134_n.jpg" alt="Beautiful Tinku">
+    </div>
+  </a>
+</div>
   </section>
 
   <section class="gallery-section">
-    <h2 class="section-title animate__animated animate__fadeIn">Beautiful Memories</h2>
-    
-    <div class="frame-gallery">
+  <h2 class="section-title animate__animated animate__fadeIn">Beautiful Memories</h2>
+
+  <div class="frame-gallery">
+    <a href="image_view.html?img=media/81266106_2527132230904827_3883371667967180800_n.jpg">
       <div class="gallery-item">
         <img src="media/81266106_2527132230904827_3883371667967180800_n.jpg" alt="Beautiful Tinku">
       </div>
+    </a>
+    <a href="image_view.html?img=media/81353514_2564033677042920_1754279602504597504_n.jpg">
       <div class="gallery-item">
         <img src="media/81353514_2564033677042920_1754279602504597504_n.jpg" alt="Tinku with family">
       </div>
+    </a>
+    <a href="image_view.html?img=media/81407565_565657197350897_4284593670079905792_n.jpg">
       <div class="gallery-item">
         <img src="media/81407565_565657197350897_4284593670079905792_n.jpg" alt="Tinku smiling">
       </div>
+    </a>
+    <a href="image_view.html?img=media/81476387_2428031177325817_3807532187721400320_n.jpg">
       <div class="gallery-item">
         <img src="media/81476387_2428031177325817_3807532187721400320_n.jpg" alt="Tinku portrait">
       </div>
+    </a>
+    <a href="image_view.html?img=media/81597994_505641076741633_2605616230232489984_n.jpg">
       <div class="gallery-item">
         <img src="media/81597994_505641076741633_2605616230232489984_n.jpg" alt="Tinku looking beautiful">
       </div>
+    </a>
+    <a href="image_view.html?img=media/81942578_1259042147616207_3059785687227170816_n.jpg">
       <div class="gallery-item">
         <img src="media/81942578_1259042147616207_3059785687227170816_n.jpg" alt="Tinku special moment">
       </div>
+    </a>
+    <a href="image_view.html?img=media/81949411_1414970511994104_5274312232824471552_n.jpg">
       <div class="gallery-item">
         <img src="media/81949411_1414970511994104_5274312232824471552_n.jpg" alt="Us together 1">
       </div>
+    </a>
+    <a href="image_view.html?img=media/82799283_3381891258550224_9006003995407286272_n.jpg">
       <div class="gallery-item">
-        <img src="media/81353514_2564033677042920_1754279602504597504_n.jpg" alt="Us together 2">
+        <img src="media/82799283_3381891258550224_9006003995407286272_n.jpg" alt="Final image">
       </div>
-      <div class="gallery-item">
-        <img src="media/82799283_3381891258550224_9006003995407286272_n.jpg">
-      </div>
-    </div>
-  </section>
+    </a>
+  </div>
+</section>
+
 
   <!-- Birthday Wish Section -->
   <section>
@@ -828,32 +927,77 @@
       }
     }
 
-    // Lightbox functionality
-    // Lightbox functionality
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightboxImg');
-    const closeBtn = document.getElementById('closeBtn');
+    // Image Modal functionality
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalCaption = document.getElementById('modalCaption');
+    const modalClose = document.getElementById('modalClose');
+    const modalPrev = document.getElementById('modalPrev');
+    const modalNext = document.getElementById('modalNext');
     
-    // Add click event to all images
-    document.querySelectorAll('.frame-gallery .gallery-item img').forEach(img => {
+    // Get all gallery images
+    const galleryImages = Array.from(document.querySelectorAll('.gallery-item img'));
+    let currentImageIndex = 0;
+    
+    // Open modal with clicked image
+    galleryImages.forEach((img, index) => {
       img.addEventListener('click', function() {
-        lightbox.classList.add('active');
-        lightboxImg.src = this.src;
-        lightboxImg.alt = this.alt;
+        currentImageIndex = index;
+        updateModal();
+        imageModal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
       });
     });
     
-    // Close lightbox
-    closeBtn.addEventListener('click', function() {
-      lightbox.classList.remove('active');
+    // Close modal
+    modalClose.addEventListener('click', function() {
+      imageModal.classList.remove('active');
+      document.body.style.overflow = 'auto'; // Re-enable scrolling
     });
     
     // Close when clicking outside image
-    lightbox.addEventListener('click', function(e) {
-      if (e.target === lightbox) {
-        lightbox.classList.remove('active');
+    imageModal.addEventListener('click', function(e) {
+      if (e.target === imageModal) {
+        imageModal.classList.remove('active');
+        document.body.style.overflow = 'auto'; // Re-enable scrolling
       }
     });
+    
+    // Navigation between images
+    modalPrev.addEventListener('click', function(e) {
+      e.stopPropagation();
+      currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+      updateModal();
+    });
+    
+    modalNext.addEventListener('click', function(e) {
+      e.stopPropagation();
+      currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+      updateModal();
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (!imageModal.classList.contains('active')) return;
+      
+      if (e.key === 'Escape') {
+        imageModal.classList.remove('active');
+        document.body.style.overflow = 'auto'; // Re-enable scrolling
+      } else if (e.key === 'ArrowLeft') {
+        currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+        updateModal();
+      } else if (e.key === 'ArrowRight') {
+        currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+        updateModal();
+      }
+    });
+    
+    // Update modal content
+    function updateModal() {
+      const currentImage = galleryImages[currentImageIndex];
+      modalImage.src = currentImage.src;
+      modalCaption.textContent = currentImage.alt;
+    }
 
     // Add scroll animations
     function animateOnScroll() {
@@ -870,14 +1014,14 @@
     }
 
     // Run on load
-    window.onload = function() {
+    window.addEventListener('load', function() {
       createConfetti();
       animateOnScroll();
-    };
+    });
 
     // Run on scroll
     window.addEventListener('scroll', animateOnScroll);
-</script>
+  </script>
 </body>
 
 </html>
